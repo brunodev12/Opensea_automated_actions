@@ -1,6 +1,9 @@
 import os
 import json
 import csv
+import time
+import threading
+from threading import Thread
 from services.bidding import getBiddingMessage
 from services.listing import getListingMessage
 from utils.add_element_utils import save_collection_info
@@ -10,8 +13,6 @@ from utils.set_actions import setActions
 from utils.concurrent_utils import getBalanceAndUserAssets
 from utils.update_collections import setBlockchains, updateCollections
 from data.variables import address
-import threading
-import time
 
 
 def run(item:dict):
@@ -43,7 +44,14 @@ if __name__ == '__main__':
         for row in csv_reader:
             collection_list.append(row)
 
-    collection_list = sorted(collection_list, key=lambda x: (x['slug'], x['trait']), reverse=True)
+    collection_list = sorted(
+        collection_list,
+        key=lambda x: (
+            x['slug'],
+            x['trait'] != 'yes',
+            '],[' not in x['type'],
+        )
+    )
 
     setBlockchains(collection_list)
 
@@ -62,7 +70,7 @@ if __name__ == '__main__':
     
     for chunk in chunks:
 
-        threads = []
+        threads:list[Thread] = []
         for item in chunk:
             thread = threading.Thread(target=run, args=(item,))
             threads.append(thread)

@@ -1,6 +1,7 @@
 import json
 import time
 import threading
+from threading import Thread
 from src.cancel_order_src import cancelOrderSrc
 from src.create_offer import createOffer
 from src.create_single_offer import createSingleOffer
@@ -184,7 +185,7 @@ if __name__ == '__main__':
     with open("offers_to_cancel.json") as jsonfile:
         offers_to_cancel:list[list] = json.load(jsonfile)
 
-    threads = []
+    threads:list[Thread] = []
     for item in offers_to_cancel:
         thread = threading.Thread(target=cancelOrder, args=(item,))
         threads.append(thread)
