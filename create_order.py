@@ -50,8 +50,8 @@ def createOrder(j:dict):
             with lock:
                 listing_response = createListingOrder(parameters, signature, chain, _id)
             if listing_response:
-                order_hash = listing_response['order']['order_hash']
-                protocol_address = listing_response['order']['protocol_address']
+                order_hash = listing_response['order_hash']
+                protocol_address = listing_response['protocol_address']
                 j['order_hash'] = order_hash
                 j['chain'] = chain
                 j['protocol_address'] = protocol_address
@@ -121,8 +121,8 @@ def createOrder(j:dict):
                     with lock:
                         singleOffer_response = createSingleOffer(parameters, signature, chain, _id)
                     if singleOffer_response:
-                        order_hash = singleOffer_response['order']['order_hash']
-                        protocol_address = singleOffer_response['order']['protocol_address']
+                        order_hash = singleOffer_response['order_hash']
+                        protocol_address = singleOffer_response['protocol_address']
                         j['order_hash'] = order_hash
                         j['chain'] = chain
                         j['protocol_address'] = protocol_address
